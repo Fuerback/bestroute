@@ -10,6 +10,10 @@ public class RouteResultDTO {
 		this.totalPrice = totalPrice;
 	}
 
+	public Integer getTotalPrice() {
+		return totalPrice;
+	}
+
 	@Override public String toString() {
 		return routeDescription + " > $" + totalPrice;
 	}
