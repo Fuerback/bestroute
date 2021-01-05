@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/insert")
-public class InsertRoute {
+public class InsertRouteController {
 
     @PostMapping(value = "/route")
     public String searchBestRoute() {

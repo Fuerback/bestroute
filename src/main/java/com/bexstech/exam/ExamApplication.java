@@ -12,15 +12,22 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.bexstech.exam.entity.Route;
+import com.bexstech.exam.models.RouteModel;
+import com.bexstech.exam.services.RouteService;
 
 @SpringBootApplication
 public class ExamApplication implements ApplicationRunner {
 
     @Value("${file}")
-    private String file;
+    private String filePath;
 
     private final String EXIT = "exit";
+
+    private RouteService routeService;
+
+    public ExamApplication(RouteService routeService) {
+        this.routeService = routeService;
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(ExamApplication.class, args);
@@ -29,14 +36,14 @@ public class ExamApplication implements ApplicationRunner {
     @Override
     public void run( ApplicationArguments args ) throws Exception
     {
-        List<Route> routes = new ArrayList();
+        List<RouteModel> routeModels = new ArrayList();
 
-        System.out.println( "file: " + file );
-        BufferedReader csvReader = new BufferedReader(new FileReader(file));
+        System.out.println( "file: " + filePath );
+        BufferedReader csvReader = new BufferedReader(new FileReader( filePath ));
         String row;
         while ((row = csvReader.readLine()) != null) {
             String[] data = row.split(",");
-            routes.add( new Route( data[0], data[1], Integer.parseInt( data[2] ) ) );
+            routeModels.add( new RouteModel( data[0], data[1], Integer.parseInt( data[2] ) ) );
         }
         csvReader.close();
 
@@ -48,9 +55,10 @@ public class ExamApplication implements ApplicationRunner {
             String route = scanner.next();
             if(EXIT.equalsIgnoreCase( route )) {break;}
 
-            // find best route
+            String[] routeList = route.split( "-" );
+            routeService.findBestRoute( routeList[0], routeList[1], routeModels );
 
-            System.out.println(String.format("best route: %s", routes.get( 0 ).toString()));
+            System.out.println(String.format("best route: %s", routeModels.get( 0 ).toString()));
         }
     }
 

@@ -1,11 +1,11 @@
-package com.bexstech.exam.entity;
+package com.bexstech.exam.models;
 
-public class Route {
+public class RouteModel {
 	private String from;
 	private String to;
 	private Integer price;
 
-	public Route(String from, String to, Integer price) {
+	public RouteModel(String from, String to, Integer price) {
 		this.from = from;
 		this.to = to;
 		this.price = price;

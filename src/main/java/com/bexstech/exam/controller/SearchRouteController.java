@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/search")
-public class SearchRoute {
+public class SearchRouteController {
 
     @GetMapping(value = "/best-route")
     public String searchBestRoute() {
