@@ -11,8 +11,10 @@ import java.util.Scanner;
 @SpringBootApplication
 public class ExamApplication implements ApplicationRunner {
 
-    @Value("${name}")
-    private String name;
+    @Value("${file}")
+    private String file;
+
+    private final String EXIT = "exit";
 
     public static void main(String[] args) {
         SpringApplication.run(ExamApplication.class, args);
@@ -21,24 +23,20 @@ public class ExamApplication implements ApplicationRunner {
     @Override
     public void run( ApplicationArguments args ) throws Exception
     {
-        System.out.println( "Name: " + name );
+        System.out.println( "file: " + file );
 
-        // create a scanner so we can read the command-line input
         Scanner scanner = new Scanner(System.in);
 
-        //  prompt for the user's name
-        System.out.print("Enter your name: ");
+        while(true) {
+            System.out.print("please enter the route: ");
 
-        // get their input as a String
-        String username = scanner.next();
+            String route = scanner.next();
+            if(EXIT.equalsIgnoreCase( route )) {break;}
 
-        // prompt for their age
-        System.out.print("Enter your age: ");
+            // find best route
 
-        // get the age as an int
-        int age = scanner.nextInt();
-
-        System.out.println(String.format("%s, your age is %d", username, age));
+            System.out.println(String.format("best route: %s", route));
+        }
     }
 
 }
