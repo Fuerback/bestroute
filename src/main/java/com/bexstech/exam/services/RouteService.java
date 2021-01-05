@@ -1,6 +1,6 @@
 package com.bexstech.exam.services;
 
-import com.bexstech.exam.dto.RouteResultDTO;
+import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.models.RouteModel;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class RouteService {
 
     private String routeDescription = "";
     private Integer totalPrice = 0;
-    private List<RouteResultDTO> routeResultDTOS = new ArrayList();
+    private List<RouteResponseDTO> routeResultDTOS = new ArrayList();
 
     public String findBestRoute(String startingPoint, String destination, List<RouteModel> routeModels) {
         List<RouteModel> staringPoints = findStaringPoints(startingPoint, routeModels);
@@ -26,8 +26,8 @@ public class RouteService {
             buildRoute(currentRoute, destination, routeModels);
         });
 
-        RouteResultDTO routeResultDTO = routeResultDTOS.stream()
-                .min(Comparator.comparing(RouteResultDTO::getTotalPrice))
+        RouteResponseDTO routeResultDTO = routeResultDTOS.stream()
+                .min(Comparator.comparing(RouteResponseDTO::getTotalPrice))
                 .orElseThrow(NoSuchElementException::new);
 
         return routeResultDTO.toString();
@@ -47,7 +47,7 @@ public class RouteService {
             List<RouteModel> staringPoints = findStaringPoints(routeModel.getTo(), routeModels);
             staringPoints.forEach(currentRoute -> buildRoute(currentRoute, destination, routeModels));
         } else {
-            routeResultDTOS.add(new RouteResultDTO(routeDescription, totalPrice));
+            routeResultDTOS.add(new RouteResponseDTO(routeDescription, totalPrice));
         }
     }
 }
