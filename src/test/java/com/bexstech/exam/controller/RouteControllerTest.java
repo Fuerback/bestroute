@@ -1,12 +1,25 @@
 package com.bexstech.exam.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
+import java.net.URI;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.bexstech.exam.dto.RouteResponseDTO;
+import com.bexstech.exam.service.RouteService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, args = "--file=/home/felipe/Documents/routeModels.csv")
 public class RouteControllerTest {
@@ -17,9 +30,21 @@ public class RouteControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-//	@Test
-//	public void contextLoads() {
-//		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/route",
-//				String.class)).contains("OK");
-//	}
+	@MockBean
+	private RouteService routeService;
+
+	@Test
+	public void shouldRequestRoute() {
+		URI targetUrl= UriComponentsBuilder.fromUriString("http://localhost:" + port + "/route")
+				.queryParam("from", "GRU")
+				.queryParam("to", "CDG")
+				.build()
+				.toUri();
+
+		doReturn( new RouteResponseDTO("GRU-CDG", 20) ).when( routeService ).findRoute( anyString(), any() );
+		String forObject = restTemplate.getForObject( targetUrl, String.class );
+
+		assertThat(forObject).contains("GRU-CDG > $20");
+		verify( routeService ).findRoute( anyString(), any() );
+	}
 }

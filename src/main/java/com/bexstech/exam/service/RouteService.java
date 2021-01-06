@@ -3,10 +3,14 @@ package com.bexstech.exam.service;
 import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.BadRequestException;
 import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.util.ReadFile;
+import com.bexstech.exam.util.RoutesSingleton;
 import com.bexstech.exam.util.ValidateInput;
+import com.bexstech.exam.util.WriteFile;
 
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -39,6 +43,16 @@ public class RouteService {
         });
 
         return findCheaperRoute();
+    }
+
+    public void insertRoute(RouteDTO routeDTO) throws IOException {
+        if( ValidateInput.isValid( routeDTO ) ) {
+            WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeDTO );
+            List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
+            RoutesSingleton.getInstance().updateRoutes( routeDTOS );
+        } else {
+            throw new BadRequestException("invalid route");
+        }
     }
 
     private RouteResponseDTO findCheaperRoute() {
