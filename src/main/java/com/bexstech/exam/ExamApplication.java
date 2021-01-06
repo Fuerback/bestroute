@@ -1,6 +1,7 @@
 package com.bexstech.exam;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,7 @@ public class ExamApplication implements ApplicationRunner {
                 String bestRoute = routeService.findBestRoute(route, routeModels);
 
                 System.out.println(String.format("best route: %s", bestRoute));
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException | NoSuchElementException e) {
                 System.out.println(String.format("invalid route"));
             }
         }
