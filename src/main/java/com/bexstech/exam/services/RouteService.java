@@ -16,9 +16,15 @@ import java.util.stream.Collectors;
 @Service
 public class RouteService {
 
-    private String routeDescription = "";
-    private Integer totalPrice = 0;
-    private List<RouteResponseDTO> routeResultDTOS = new ArrayList();
+    private String routeDescription;
+    private Integer totalPrice;
+    private List<RouteResponseDTO> routeResultDTOS;
+
+    public RouteService() {
+        this.routeDescription = "";
+        this.totalPrice = 0;
+        this.routeResultDTOS = new ArrayList();
+    }
 
     public RouteResponseDTO findRoute(String route, List<RouteModel> routeModels) {
         if(!ValidateInput.isValid( route )) { throw new InvalidInputException(); }

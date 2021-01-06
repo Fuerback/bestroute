@@ -23,12 +23,6 @@ public class ExamApplication implements ApplicationRunner {
     @Value("${file}")
     private String filePath;
 
-    private RouteService routeService;
-
-    public ExamApplication(RouteService routeService) {
-        this.routeService = routeService;
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(ExamApplication.class, args);
     }
@@ -47,7 +41,8 @@ public class ExamApplication implements ApplicationRunner {
             String route = scanner.nextLine();
 
             try {
-                RouteResponseDTO routeResponseDTO = routeService.findRoute( route, routeModels );
+                RouteService routeService = new RouteService();
+                RouteResponseDTO routeResponseDTO = routeService.findRoute( route, RoutesSingleton.getInstance().getRouteModels() );
 
                 System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
             } catch (InvalidInputException | NoSuchElementException e) {
