@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.bexstech.exam.exception.InvalidInputException;
 import com.bexstech.exam.models.RouteModel;
 import com.bexstech.exam.services.RouteService;
 
@@ -31,19 +32,17 @@ public class RouteServiceTest {
 
 	@Test
 	public void shouldFindBestRoute() {
-		RouteModel routeModel = new RouteModel( "GRU", "CDG", null );
+		String routeInput = "GRU-CDG";
 
-		String bestRoute = routeService.findBestRoute( routeModel, ROUTES );
+		String bestRoute = routeService.findBestRoute( routeInput, ROUTES );
 
 		assertThat( bestRoute ).isEqualTo( "GRU - BRC - SCL - ORL - CDG > $40" );
 	}
 
-//	@Test
-//	public void shouldIgnoreInvalidRoute() {
-//		RouteModel routeModel = new RouteModel( "GRU", "GRU", null );
-//
-//		String bestRoute = routeService.findBestRoute( routeModel, ROUTES );
-//
-//		assertThat( bestRoute ).isEqualTo( "GRU - BRC - SCL - ORL - CDG > $40" );
-//	}
+	@Test(expected = InvalidInputException.class)
+	public void shouldIgnoreSameRoute() {
+		String routeInput = "GRU-GRU";
+
+		routeService.findBestRoute( routeInput, ROUTES );
+	}
 }

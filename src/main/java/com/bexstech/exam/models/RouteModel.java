@@ -23,6 +23,11 @@ public class RouteModel {
 		return price;
 	}
 
+	public static RouteModel from(String routeInput) {
+		String[] route = routeInput.split("-");
+		return new RouteModel( route[0], route[1], null );
+	}
+
 	@Override public String toString() {
 		return this.from + " - " + this.to + " > $" + this.price;
 	}

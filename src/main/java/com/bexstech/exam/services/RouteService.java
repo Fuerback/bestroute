@@ -1,7 +1,10 @@
 package com.bexstech.exam.services;
 
 import com.bexstech.exam.dto.RouteResponseDTO;
+import com.bexstech.exam.exception.InvalidInputException;
 import com.bexstech.exam.models.RouteModel;
+import com.bexstech.exam.util.ValidateInput;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,9 +20,10 @@ public class RouteService {
     private Integer totalPrice = 0;
     private List<RouteResponseDTO> routeResultDTOS = new ArrayList();
 
-    public String findBestRoute(RouteModel routeModel, List<RouteModel> routeModels) {
-        // validar o input aqui dentro pra facilitar o teste
-        // remover a validação do application
+    public String findBestRoute(String route, List<RouteModel> routeModels) {
+        if(!ValidateInput.isValid( route )) { throw new InvalidInputException(); }
+
+        RouteModel routeModel = RouteModel.from( route );
         List<RouteModel> staringPoints = findStaringPoints(routeModel.getFrom(), routeModels);
 
         staringPoints.forEach(currentRoute -> {
