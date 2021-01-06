@@ -20,7 +20,7 @@ public class RouteService {
     private Integer totalPrice = 0;
     private List<RouteResponseDTO> routeResultDTOS = new ArrayList();
 
-    public String findBestRoute(String route, List<RouteModel> routeModels) {
+    public RouteResponseDTO findRoute(String route, List<RouteModel> routeModels) {
         if(!ValidateInput.isValid( route )) { throw new InvalidInputException(); }
 
         RouteModel routeModel = RouteModel.from( route );
@@ -32,11 +32,13 @@ public class RouteService {
             buildRoute(currentRoute, routeModel.getTo(), routeModels);
         });
 
-        RouteResponseDTO routeResultDTO = routeResultDTOS.stream()
-                .min(Comparator.comparing(RouteResponseDTO::getTotalPrice))
-                .orElseThrow(NoSuchElementException::new);
+        return findCheaperRoute();
+    }
 
-        return routeResultDTO.toString();
+    private RouteResponseDTO findCheaperRoute() {
+        return routeResultDTOS.stream()
+                .min( Comparator.comparing( RouteResponseDTO::getTotalPrice ) )
+                .orElseThrow( NoSuchElementException::new );
     }
 
     private List<RouteModel> findStaringPoints(String startingPoint, List<RouteModel> routeModels) {

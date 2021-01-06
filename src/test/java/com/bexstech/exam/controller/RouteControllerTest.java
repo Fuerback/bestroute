@@ -17,9 +17,9 @@ public class RouteControllerTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	@Test
-	public void contextLoads() {
-		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/route",
-				String.class)).contains("OK");
-	}
+//	@Test
+//	public void contextLoads() {
+//		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/route",
+//				String.class)).contains("OK");
+//	}
 }

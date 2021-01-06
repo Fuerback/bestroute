@@ -10,10 +10,12 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.InvalidInputException;
 import com.bexstech.exam.models.RouteModel;
 import com.bexstech.exam.services.RouteService;
 import com.bexstech.exam.util.ReadFile;
+import com.bexstech.exam.util.RoutesSingleton;
 
 @SpringBootApplication
 public class ExamApplication implements ApplicationRunner {
@@ -34,6 +36,8 @@ public class ExamApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         List<RouteModel> routeModels = ReadFile.readCSV( filePath );
+        RoutesSingleton.getInstance().updateRoutes( routeModels );
+        RoutesSingleton.getInstance().updateFilePath( filePath );
 
         Scanner scanner = new Scanner(System.in);
 
@@ -43,9 +47,9 @@ public class ExamApplication implements ApplicationRunner {
             String route = scanner.nextLine();
 
             try {
-                String bestRoute = routeService.findBestRoute(route, routeModels);
+                RouteResponseDTO routeResponseDTO = routeService.findRoute( route, routeModels );
 
-                System.out.println(String.format("best route: %s", bestRoute));
+                System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
             } catch (InvalidInputException | NoSuchElementException e) {
                 System.out.println(String.format("invalid route"));
             }

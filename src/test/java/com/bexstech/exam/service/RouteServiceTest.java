@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.InvalidInputException;
 import com.bexstech.exam.models.RouteModel;
 import com.bexstech.exam.services.RouteService;
@@ -37,9 +38,10 @@ public class RouteServiceTest {
 	public void shouldFindRoute() {
 		String routeInput = "GRU-CDG";
 
-		String bestRoute = routeService.findBestRoute( routeInput, ROUTES );
+		RouteResponseDTO routeResponseDTO = routeService.findRoute( routeInput, ROUTES );
 
-		assertThat( bestRoute ).isEqualTo( "GRU - BRC - SCL - ORL - CDG > $40" );
+		assertThat( routeResponseDTO.getTotalPrice() ).isEqualTo( 40 );
+		assertThat( routeResponseDTO.getRouteDescription() ).isEqualTo( "GRU - BRC - SCL - ORL - CDG" );
 	}
 
 	@Test(expected = InvalidInputException.class)
@@ -47,7 +49,7 @@ public class RouteServiceTest {
 	public void shouldIgnoreDuplicateRoute() {
 		String routeInput = "GRU-GRU";
 
-		routeService.findBestRoute( routeInput, ROUTES );
+		routeService.findRoute( routeInput, ROUTES );
 	}
 
 	@Test(expected = InvalidInputException.class)
@@ -55,7 +57,7 @@ public class RouteServiceTest {
 	public void shouldIgnoreEmptyRoute() {
 		String routeInput = "";
 
-		routeService.findBestRoute( routeInput, ROUTES );
+		routeService.findRoute( routeInput, ROUTES );
 	}
 
 	@Test(expected = InvalidInputException.class)
@@ -63,7 +65,7 @@ public class RouteServiceTest {
 	public void shouldIgnoreNumericRoute() {
 		String routeInput = "G1R-CDG";
 
-		routeService.findBestRoute( routeInput, ROUTES );
+		routeService.findRoute( routeInput, ROUTES );
 	}
 
 	@Test(expected = NoSuchElementException.class)
@@ -71,6 +73,6 @@ public class RouteServiceTest {
 	public void shouldIgnoreUnknownRoute() {
 		String routeInput = "GRU-XXX";
 
-		routeService.findBestRoute( routeInput, ROUTES );
+		routeService.findRoute( routeInput, ROUTES );
 	}
 }
