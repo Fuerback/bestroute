@@ -3,15 +3,15 @@ package com.bexstech.exam.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bexstech.exam.models.RouteModel;
+import com.bexstech.exam.dto.RouteDTO;
 
 public class RoutesSingleton {
 	private static RoutesSingleton instance;
-	private List<RouteModel> routeModels;
+	private List<RouteDTO> routeDTOS;
 	private String filePath;
 
 	private RoutesSingleton() {
-		routeModels = new ArrayList<>();
+		routeDTOS = new ArrayList<>();
 		filePath = "";
 	}
 
@@ -22,16 +22,16 @@ public class RoutesSingleton {
 		return instance;
 	}
 
-	public synchronized void updateRoutes(List<RouteModel> routeModels) {
-		this.routeModels = routeModels;
+	public synchronized void updateRoutes(List<RouteDTO> routeDTOS) {
+		this.routeDTOS = routeDTOS;
 	}
 
 	public synchronized void updateFilePath(String filePath) {
 		this.filePath = filePath;
 	}
 
-	public List<RouteModel> getRouteModels() {
-		return routeModels;
+	public List<RouteDTO> getRouteModels() {
+		return routeDTOS;
 	}
 
 	public String getFilePath() {

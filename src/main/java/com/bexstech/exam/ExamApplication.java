@@ -12,8 +12,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.InvalidInputException;
-import com.bexstech.exam.models.RouteModel;
-import com.bexstech.exam.services.RouteService;
+import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.service.RouteService;
 import com.bexstech.exam.util.ReadFile;
 import com.bexstech.exam.util.RoutesSingleton;
 
@@ -29,13 +29,13 @@ public class ExamApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        List<RouteModel> routeModels = ReadFile.readCSV( filePath );
-        RoutesSingleton.getInstance().updateRoutes( routeModels );
+        List<RouteDTO> routeDTOS = ReadFile.readCSV( filePath );
+        RoutesSingleton.getInstance().updateRoutes( routeDTOS );
         RoutesSingleton.getInstance().updateFilePath( filePath );
 
         Scanner scanner = new Scanner(System.in);
 
-        while (!routeModels.isEmpty()) {
+        while (!routeDTOS.isEmpty()) {
             System.out.print("please enter the route: ");
 
             String route = scanner.nextLine();

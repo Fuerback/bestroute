@@ -10,17 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bexstech.exam.models.RouteModel;
-import com.bexstech.exam.services.RouteService;
+import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.service.RouteService;
 import com.bexstech.exam.util.ReadFile;
 import com.bexstech.exam.util.RoutesSingleton;
+import com.bexstech.exam.util.ValidateInput;
 import com.bexstech.exam.util.WriteFile;
 
 @RestController
 @RequestMapping("route")
 public class RouteController {
 
-    private RouteService routeService;
+    private final RouteService routeService;
 
     public RouteController(RouteService routeService) {
         this.routeService = routeService;
@@ -32,9 +34,13 @@ public class RouteController {
     }
 
     @PutMapping
-    public void insertRoute(@RequestBody RouteModel routeModel) throws IOException {
-        WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeModel);
-        List<RouteModel> routeModels = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
-        RoutesSingleton.getInstance().updateRoutes( routeModels );
+    public void insertRoute(@RequestBody RouteDTO routeDTO) throws IOException {
+        if( ValidateInput.isValid( routeDTO ) ) {
+            WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeDTO );
+            List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
+            RoutesSingleton.getInstance().updateRoutes( routeDTOS );
+        } else {
+            throw new BadRequestException("invalid route");
+        }
     }
 }

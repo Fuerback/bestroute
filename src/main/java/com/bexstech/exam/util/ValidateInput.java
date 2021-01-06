@@ -1,6 +1,6 @@
 package com.bexstech.exam.util;
 
-import com.bexstech.exam.models.RouteModel;
+import com.bexstech.exam.dto.RouteDTO;
 
 public class ValidateInput {
 
@@ -9,40 +9,40 @@ public class ValidateInput {
 				!route.isEmpty() &&
 				route.contains( "-" ) &&
 				route.length() == 7 &&
-				isValid( new RouteModel( route.split( "-" )[0], route.split( "-" )[1], null ) );
+				isValid( new RouteDTO( route.split( "-" )[0], route.split( "-" )[1], null ) );
 
 	}
 
-	private static boolean isValid(RouteModel routeModelInput) {
-		return isNotNull( routeModelInput ) &&
-				isNotEmpty( routeModelInput ) &&
-				isNotSameRoute( routeModelInput ) &&
-				sizeIsThree( routeModelInput ) &&
-				isOnlyLetters( routeModelInput );
+	public static boolean isValid(RouteDTO routeDTOInput) {
+		return isNotNull( routeDTOInput ) &&
+				isNotEmpty( routeDTOInput ) &&
+				isNotSameRoute( routeDTOInput ) &&
+				sizeIsThree( routeDTOInput ) &&
+				isOnlyLetters( routeDTOInput );
 
 	}
 
-	private static boolean isOnlyLetters(RouteModel routeModelInput) {
-		return routeModelInput.getFrom().matches( "^[a-zA-Z]*$" ) &&
-				routeModelInput.getTo().matches( "^[a-zA-Z]*$" );
+	private static boolean isOnlyLetters(RouteDTO routeDTOInput) {
+		return routeDTOInput.getFrom().matches( "^[a-zA-Z]*$" ) &&
+				routeDTOInput.getTo().matches( "^[a-zA-Z]*$" );
 	}
 
-	private static boolean sizeIsThree(RouteModel routeModelInput) {
-		return routeModelInput.getFrom().length() == 3 &&
-				routeModelInput.getTo().length() == 3;
+	private static boolean sizeIsThree(RouteDTO routeDTOInput) {
+		return routeDTOInput.getFrom().length() == 3 &&
+				routeDTOInput.getTo().length() == 3;
 	}
 
-	private static boolean isNotSameRoute(RouteModel routeModelInput) {
-		return !routeModelInput.getFrom().equalsIgnoreCase( routeModelInput.getTo() );
+	private static boolean isNotSameRoute(RouteDTO routeDTOInput) {
+		return !routeDTOInput.getFrom().equalsIgnoreCase( routeDTOInput.getTo() );
 	}
 
-	private static boolean isNotEmpty(RouteModel routeModelInput) {
-		return !routeModelInput.getFrom().isEmpty() &&
-				!routeModelInput.getTo().isEmpty();
+	private static boolean isNotEmpty(RouteDTO routeDTOInput) {
+		return !routeDTOInput.getFrom().isEmpty() &&
+				!routeDTOInput.getTo().isEmpty();
 	}
 
-	private static boolean isNotNull(RouteModel routeModelInput) {
-		return routeModelInput.getTo() != null &&
-				routeModelInput.getFrom() != null;
+	private static boolean isNotNull(RouteDTO routeDTOInput) {
+		return routeDTOInput.getTo() != null &&
+				routeDTOInput.getFrom() != null;
 	}
 }

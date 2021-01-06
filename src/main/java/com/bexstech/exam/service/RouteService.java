@@ -1,8 +1,8 @@
-package com.bexstech.exam.services;
+package com.bexstech.exam.service;
 
 import com.bexstech.exam.dto.RouteResponseDTO;
-import com.bexstech.exam.exception.InvalidInputException;
-import com.bexstech.exam.models.RouteModel;
+import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.util.ValidateInput;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class RouteService {
 
     private String routeDescription;
     private Integer totalPrice;
-    private List<RouteResponseDTO> routeResultDTOS;
+    private final List<RouteResponseDTO> routeResultDTOS;
 
     public RouteService() {
         this.routeDescription = "";
@@ -26,16 +26,16 @@ public class RouteService {
         this.routeResultDTOS = new ArrayList();
     }
 
-    public RouteResponseDTO findRoute(String route, List<RouteModel> routeModels) {
-        if(!ValidateInput.isValid( route )) { throw new InvalidInputException(); }
+    public RouteResponseDTO findRoute(String route, List<RouteDTO> routeDTOS) {
+        if(!ValidateInput.isValid( route )) { throw new BadRequestException("invalid route"); }
 
-        RouteModel routeModel = RouteModel.from( route );
-        List<RouteModel> staringPoints = findStaringPoints(routeModel.getFrom(), routeModels);
+        RouteDTO routeDTO = RouteDTO.from( route );
+        List<RouteDTO> staringPoints = findStaringPoints( routeDTO.getFrom(), routeDTOS );
 
         staringPoints.forEach(currentRoute -> {
-            routeDescription = routeModel.getFrom();
+            routeDescription = routeDTO.getFrom();
             totalPrice = 0;
-            buildRoute(currentRoute, routeModel.getTo(), routeModels);
+            buildRoute(currentRoute, routeDTO.getTo(), routeDTOS );
         });
 
         return findCheaperRoute();
@@ -47,19 +47,19 @@ public class RouteService {
                 .orElseThrow( NoSuchElementException::new );
     }
 
-    private List<RouteModel> findStaringPoints(String startingPoint, List<RouteModel> routeModels) {
-        return routeModels.stream()
+    private List<RouteDTO> findStaringPoints(String startingPoint, List<RouteDTO> routeDTOS) {
+        return routeDTOS.stream()
                 .filter(routeModel -> routeModel.getFrom().equalsIgnoreCase(startingPoint))
                 .collect(Collectors.toList());
     }
 
-    private void buildRoute(RouteModel routeModel, String destination, List<RouteModel> routeModels) {
-        routeDescription += " - " + routeModel.getTo();
-        totalPrice += routeModel.getPrice();
-        String currentDestination = routeModel.getTo();
+    private void buildRoute(RouteDTO routeDTO, String destination, List<RouteDTO> routeDTOS) {
+        routeDescription += " - " + routeDTO.getTo();
+        totalPrice += routeDTO.getPrice();
+        String currentDestination = routeDTO.getTo();
         if (!currentDestination.equalsIgnoreCase(destination)) {
-            List<RouteModel> staringPoints = findStaringPoints(routeModel.getTo(), routeModels);
-            staringPoints.forEach(currentRoute -> buildRoute(currentRoute, destination, routeModels));
+            List<RouteDTO> staringPoints = findStaringPoints( routeDTO.getTo(), routeDTOS );
+            staringPoints.forEach(currentRoute -> buildRoute(currentRoute, destination, routeDTOS ));
         } else {
             routeResultDTOS.add(new RouteResponseDTO(routeDescription, totalPrice));
         }
