@@ -25,7 +25,7 @@ public class RouteDTO {
 
 	public static RouteDTO from(String routeInput) {
 		String[] route = routeInput.split("-");
-		return new RouteDTO( route[0], route[1], null );
+		return new RouteDTO( route[0], route[1], 0 );
 	}
 
 	@Override public String toString() {

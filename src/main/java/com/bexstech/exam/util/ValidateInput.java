@@ -9,7 +9,7 @@ public class ValidateInput {
 				!route.isEmpty() &&
 				route.contains( "-" ) &&
 				route.length() == 7 &&
-				isValid( new RouteDTO( route.split( "-" )[0], route.split( "-" )[1], null ) );
+				isValid( new RouteDTO( route.split( "-" )[0], route.split( "-" )[1], 0 ) );
 
 	}
 
@@ -18,8 +18,14 @@ public class ValidateInput {
 				isNotEmpty( routeDTOInput ) &&
 				isNotSameRoute( routeDTOInput ) &&
 				sizeIsThree( routeDTOInput ) &&
-				isOnlyLetters( routeDTOInput );
+				isOnlyLetters( routeDTOInput ) &&
+				isValidPrice( routeDTOInput );
 
+	}
+
+	private static boolean isValidPrice(RouteDTO routeDTOInput) {
+		return routeDTOInput.getPrice() != null &&
+				routeDTOInput.getPrice() > 0;
 	}
 
 	private static boolean isOnlyLetters(RouteDTO routeDTOInput) {
