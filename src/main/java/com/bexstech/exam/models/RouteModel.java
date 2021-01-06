@@ -12,11 +12,11 @@ public class RouteModel {
 	}
 
 	public String getFrom() {
-		return from;
+		return from.toUpperCase();
 	}
 
 	public String getTo() {
-		return to;
+		return to.toUpperCase();
 	}
 
 	public Integer getPrice() {

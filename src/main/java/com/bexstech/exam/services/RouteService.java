@@ -17,13 +17,15 @@ public class RouteService {
     private Integer totalPrice = 0;
     private List<RouteResponseDTO> routeResultDTOS = new ArrayList();
 
-    public String findBestRoute(String startingPoint, String destination, List<RouteModel> routeModels) {
-        List<RouteModel> staringPoints = findStaringPoints(startingPoint, routeModels);
+    public String findBestRoute(RouteModel routeModel, List<RouteModel> routeModels) {
+        // validar o input aqui dentro pra facilitar o teste
+        // remover a validação do application
+        List<RouteModel> staringPoints = findStaringPoints(routeModel.getFrom(), routeModels);
 
         staringPoints.forEach(currentRoute -> {
-            routeDescription = startingPoint;
+            routeDescription = routeModel.getFrom();
             totalPrice = 0;
-            buildRoute(currentRoute, destination, routeModels);
+            buildRoute(currentRoute, routeModel.getTo(), routeModels);
         });
 
         RouteResponseDTO routeResultDTO = routeResultDTOS.stream()

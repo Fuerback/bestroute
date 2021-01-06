@@ -2,15 +2,17 @@ package com.bexstech.exam;
 
 import com.bexstech.exam.models.RouteModel;
 import com.bexstech.exam.services.RouteService;
+import com.bexstech.exam.util.ReadFile;
+import com.bexstech.exam.util.ValidateInput;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,8 +21,6 @@ public class ExamApplication implements ApplicationRunner {
 
     @Value("${file}")
     private String filePath;
-
-    private final String EXIT = "exit";
 
     private RouteService routeService;
 
@@ -33,32 +33,25 @@ public class ExamApplication implements ApplicationRunner {
     }
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-        List<RouteModel> routeModels = new ArrayList();
-
-        System.out.println("file: " + filePath);
-        BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
-        String row;
-        while ((row = csvReader.readLine()) != null) {
-            String[] data = row.split(",");
-            routeModels.add(new RouteModel(data[0], data[1], Integer.parseInt(data[2])));
-        }
-        csvReader.close();
+    public void run(ApplicationArguments args) {
+        List<RouteModel> routeModels = ReadFile.readCSV( filePath );
 
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
+        while (!routeModels.isEmpty()) {
             System.out.print("please enter the route: ");
 
             String route = scanner.next();
-            if (EXIT.equalsIgnoreCase(route)) {
-                break;
+
+            if( ValidateInput.isValid(route) ) {
+                String[] routeInput = route.split("-");
+                RouteModel routeModel = new RouteModel( routeInput[0], routeInput[1], null );
+                String bestRoute = routeService.findBestRoute(routeModel, routeModels);
+
+                System.out.println(String.format("best route: %s", bestRoute));
+            } else {
+                System.out.println(String.format("the input is invalid"));
             }
-
-            String[] routeList = route.split("-");
-            String bestRoute = routeService.findBestRoute(routeList[0], routeList[1], routeModels);
-
-            System.out.println(String.format("best route: %s", bestRoute));
         }
     }
 

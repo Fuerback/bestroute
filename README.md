@@ -20,5 +20,5 @@ mvn clean install
 
 Run the project and inform the file path as argument
 ```sh
-mvn spring-boot:run -Dspring-boot.run.arguments=--file=/home/felipe/Documents/routeModels.csv
+mvn spring-boot:run -Dspring-boot.run.arguments=--file=/home/felipe/Docs/routes.csv
 ```
