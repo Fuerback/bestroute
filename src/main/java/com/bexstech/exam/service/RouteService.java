@@ -32,21 +32,33 @@ public class RouteService {
     }
 
     public RouteResponseDTO findRoute(String route, List<RouteDTO> routeDTOS) {
-        if(!ValidateInput.isValid( route )) { throw new BadRequestException("invalid input"); }
+        if( ValidateInput.isValid( route ) ) {
+            currentRoute = RouteDTO.from( route );
 
-        currentRoute = RouteDTO.from( route );
+            validateRoute( routeDTOS, currentRoute );
 
-        validateRoute( routeDTOS, currentRoute );
+            List<RouteDTO> staringPoints = findStaringPoints( currentRoute.getFrom(), routeDTOS );
 
-        List<RouteDTO> staringPoints = findStaringPoints( currentRoute.getFrom(), routeDTOS );
+            staringPoints.forEach(currentRoute -> {
+                routeDescription = this.currentRoute.getFrom();
+                totalPrice = 0;
+                buildRoute(currentRoute, this.currentRoute.getTo(), routeDTOS );
+            });
 
-        staringPoints.forEach(currentRoute -> {
-            routeDescription = this.currentRoute.getFrom();
-            totalPrice = 0;
-            buildRoute(currentRoute, this.currentRoute.getTo(), routeDTOS );
-        });
+            return findCheaperRoute();
+        } else {
+            throw new BadRequestException("invalid input");
+        }
+    }
 
-        return findCheaperRoute();
+    public void insertRoute(RouteDTO routeDTO) throws IOException {
+        if( ValidateInput.isValid( routeDTO ) ) {
+            WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeDTO );
+            List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
+            RoutesSingleton.getInstance().updateRoutes( routeDTOS );
+        } else {
+            throw new BadRequestException("invalid input");
+        }
     }
 
     private void validateRoute(List<RouteDTO> routeDTOS, RouteDTO routeDTO) {
@@ -58,16 +70,6 @@ public class RouteService {
                 .filter( route -> route.getTo().equalsIgnoreCase( routeDTO.getTo() ) )
                 .findAny()
                 .orElseThrow( () -> new BadRequestException( "invalid destination route" ) );
-    }
-
-    public void insertRoute(RouteDTO routeDTO) throws IOException {
-        if( ValidateInput.isValid( routeDTO ) ) {
-            WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeDTO );
-            List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
-            RoutesSingleton.getInstance().updateRoutes( routeDTOS );
-        } else {
-            throw new BadRequestException("invalid input");
-        }
     }
 
     private RouteResponseDTO findCheaperRoute() {
