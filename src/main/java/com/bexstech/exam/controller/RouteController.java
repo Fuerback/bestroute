@@ -2,6 +2,7 @@ package com.bexstech.exam.controller;
 
 import java.io.IOException;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,12 +25,13 @@ public class RouteController {
     }
 
     @GetMapping
-    public String findRoute(@RequestParam String from, @RequestParam String to) {
-        return routeService.findRoute( from + "-" + to, RoutesSingleton.getInstance().getRouteModels() ).toString();
+    public ResponseEntity findRoute(@RequestParam String from, @RequestParam String to) {
+        return ResponseEntity.ok( routeService.findRoute( from + "-" + to, RoutesSingleton.getInstance().getRouteModels() ).toString() );
     }
 
     @PutMapping
-    public void insertRoute(@RequestBody RouteDTO routeDTO) throws IOException {
+    public ResponseEntity insertRoute(@RequestBody RouteDTO routeDTO) throws IOException {
         routeService.insertRoute( routeDTO );
+        return ResponseEntity.noContent().build();
     }
 }
