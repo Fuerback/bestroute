@@ -24,7 +24,7 @@ import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.service.RouteService;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, args = "--file=/home/felipe/Documents/routeModels.csv")
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, args = "--file=/docs/routes.csv")
 public class RouteControllerTest {
 
 	@LocalServerPort
