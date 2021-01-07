@@ -10,10 +10,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.BadRequestException;
-import com.bexstech.exam.exception.InvalidInputException;
-import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.service.RouteService;
 import com.bexstech.exam.util.ReadFile;
 import com.bexstech.exam.util.RoutesSingleton;

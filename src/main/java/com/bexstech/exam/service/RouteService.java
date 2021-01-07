@@ -1,22 +1,21 @@
 package com.bexstech.exam.service;
 
-import com.bexstech.exam.dto.RouteResponseDTO;
-import com.bexstech.exam.exception.BadRequestException;
-import com.bexstech.exam.dto.RouteDTO;
-import com.bexstech.exam.util.ReadFile;
-import com.bexstech.exam.util.RoutesSingleton;
-import com.bexstech.exam.util.ValidateInput;
-import com.bexstech.exam.util.WriteFile;
-
-import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.dto.RouteResponseDTO;
+import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.util.ReadFile;
+import com.bexstech.exam.util.RoutesSingleton;
+import com.bexstech.exam.util.ValidateInput;
+import com.bexstech.exam.util.WriteFile;
 
 @Service
 public class RouteService {
