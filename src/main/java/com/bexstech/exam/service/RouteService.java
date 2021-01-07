@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +24,7 @@ public class RouteService {
     private String routeDescription;
     private Integer totalPrice;
     private final List<RouteResponseDTO> routeResultDTOS;
+    private RouteDTO currentRoute;
 
     public RouteService() {
         this.routeDescription = "";
@@ -31,18 +33,32 @@ public class RouteService {
     }
 
     public RouteResponseDTO findRoute(String route, List<RouteDTO> routeDTOS) {
-        if(!ValidateInput.isValid( route )) { throw new BadRequestException("invalid route"); }
+        if(!ValidateInput.isValid( route )) { throw new BadRequestException("invalid input"); }
 
-        RouteDTO routeDTO = RouteDTO.from( route );
-        List<RouteDTO> staringPoints = findStaringPoints( routeDTO.getFrom(), routeDTOS );
+        currentRoute = RouteDTO.from( route );
+
+        validateRoute( routeDTOS, currentRoute );
+
+        List<RouteDTO> staringPoints = findStaringPoints( currentRoute.getFrom(), routeDTOS );
 
         staringPoints.forEach(currentRoute -> {
-            routeDescription = routeDTO.getFrom();
+            routeDescription = this.currentRoute.getFrom();
             totalPrice = 0;
-            buildRoute(currentRoute, routeDTO.getTo(), routeDTOS );
+            buildRoute(currentRoute, this.currentRoute.getTo(), routeDTOS );
         });
 
         return findCheaperRoute();
+    }
+
+    private void validateRoute(List<RouteDTO> routeDTOS, RouteDTO routeDTO) {
+        routeDTOS.stream()
+                .filter( route -> route.getFrom().equalsIgnoreCase( routeDTO.getFrom() ) )
+                .findAny()
+                .orElseThrow( () -> new BadRequestException( "invalid start point" ) );
+        routeDTOS.stream()
+                .filter( route -> route.getTo().equalsIgnoreCase( routeDTO.getTo() ) )
+                .findAny()
+                .orElseThrow( () -> new BadRequestException( "invalid destination route" ) );
     }
 
     public void insertRoute(RouteDTO routeDTO) throws IOException {
@@ -51,7 +67,7 @@ public class RouteService {
             List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
             RoutesSingleton.getInstance().updateRoutes( routeDTOS );
         } else {
-            throw new BadRequestException("invalid route");
+            throw new BadRequestException("invalid input");
         }
     }
 
@@ -71,6 +87,7 @@ public class RouteService {
         routeDescription += " - " + routeDTO.getTo();
         totalPrice += routeDTO.getPrice();
         String currentDestination = routeDTO.getTo();
+        if(currentDestination.equalsIgnoreCase( this.currentRoute.getFrom() )){return;}
         if (!currentDestination.equalsIgnoreCase(destination)) {
             List<RouteDTO> staringPoints = findStaringPoints( routeDTO.getTo(), routeDTOS );
             staringPoints.forEach(currentRoute -> buildRoute(currentRoute, destination, routeDTOS ));

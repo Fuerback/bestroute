@@ -68,7 +68,7 @@ public class RouteServiceTest {
 	}
 
 	@Test(expected = NoSuchElementException.class)
-	@DisplayName( "should ignore numeric route" )
+	@DisplayName( "should ignore unknown route" )
 	public void shouldIgnoreUnknownRoute() {
 		String routeInput = "GRU-XXX";
 

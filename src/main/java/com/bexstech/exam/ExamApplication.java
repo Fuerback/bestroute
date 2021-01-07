@@ -11,6 +11,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bexstech.exam.dto.RouteResponseDTO;
+import com.bexstech.exam.exception.BadRequestException;
 import com.bexstech.exam.exception.InvalidInputException;
 import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.service.RouteService;
@@ -45,8 +46,10 @@ public class ExamApplication implements ApplicationRunner {
                 RouteResponseDTO routeResponseDTO = routeService.findRoute( route, RoutesSingleton.getInstance().getRouteModels() );
 
                 System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
-            } catch (InvalidInputException | NoSuchElementException e) {
-                System.out.println(String.format("invalid route"));
+            } catch (BadRequestException e) {
+                System.out.println(String.format(e.getMessage()));
+            } catch (NoSuchElementException e) {
+                System.out.println(String.format("no routes found"));
             }
         }
     }
