@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.bexstech.exam.dto.RouteDTO;
-import com.bexstech.exam.validation.ValidateInput;
 
 public class ValidateInputTest {
 
