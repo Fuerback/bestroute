@@ -13,8 +13,8 @@ import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.BadRequestException;
 import com.bexstech.exam.util.ReadFile;
-import com.bexstech.exam.util.RoutesSingleton;
-import com.bexstech.exam.util.ValidateInput;
+import com.bexstech.exam.singleton.RouteSingleton;
+import com.bexstech.exam.validation.ValidateInput;
 import com.bexstech.exam.util.WriteFile;
 
 @Service
@@ -53,9 +53,9 @@ public class RouteService {
 
     public void insertRoute(RouteDTO routeDTO) throws IOException {
         if( ValidateInput.isValid( routeDTO ) ) {
-            WriteFile.writeCSV( RoutesSingleton.getInstance().getFilePath(), routeDTO );
-            List<RouteDTO> routeDTOS = ReadFile.readCSV( RoutesSingleton.getInstance().getFilePath() );
-            RoutesSingleton.getInstance().updateRoutes( routeDTOS );
+            WriteFile.writeCSV( RouteSingleton.getInstance().getFilePath(), routeDTO );
+            List<RouteDTO> routeDTOS = ReadFile.readCSV( RouteSingleton.getInstance().getFilePath() );
+            RouteSingleton.getInstance().updateRoutes( routeDTOS );
         } else {
             throw new BadRequestException("invalid input");
         }
@@ -65,11 +65,11 @@ public class RouteService {
         routeDTOS.stream()
                 .filter( route -> route.getFrom().equalsIgnoreCase( routeDTO.getFrom() ) )
                 .findAny()
-                .orElseThrow( () -> new BadRequestException( "invalid start point" ) );
+                .orElseThrow( () -> new BadRequestException( "unknown start point" ) );
         routeDTOS.stream()
                 .filter( route -> route.getTo().equalsIgnoreCase( routeDTO.getTo() ) )
                 .findAny()
-                .orElseThrow( () -> new BadRequestException( "invalid destination route" ) );
+                .orElseThrow( () -> new BadRequestException( "unknown destination" ) );
     }
 
     private RouteResponseDTO findCheaperRoute() {

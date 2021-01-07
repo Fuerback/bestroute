@@ -1,4 +1,4 @@
-package com.bexstech.exam.util;
+package com.bexstech.exam.validation;
 
 import com.bexstech.exam.dto.RouteDTO;
 

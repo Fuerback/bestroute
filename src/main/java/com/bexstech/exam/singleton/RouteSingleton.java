@@ -1,23 +1,23 @@
-package com.bexstech.exam.util;
+package com.bexstech.exam.singleton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bexstech.exam.dto.RouteDTO;
 
-public class RoutesSingleton {
-	private static RoutesSingleton instance;
+public class RouteSingleton {
+	private static RouteSingleton instance;
 	private List<RouteDTO> routeDTOS;
 	private String filePath;
 
-	private RoutesSingleton() {
+	private RouteSingleton() {
 		routeDTOS = new ArrayList<>();
 		filePath = "";
 	}
 
-	public synchronized static RoutesSingleton getInstance(){
+	public synchronized static RouteSingleton getInstance(){
 		if(instance == null) {
-			instance = new RoutesSingleton();
+			instance = new RouteSingleton();
 		}
 		return instance;
 	}

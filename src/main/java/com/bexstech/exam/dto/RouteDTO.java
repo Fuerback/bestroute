@@ -12,11 +12,17 @@ public class RouteDTO {
 	}
 
 	public String getFrom() {
-		return from.toUpperCase();
+		if(from != null) {
+			return from.toUpperCase();
+		}
+		return null;
 	}
 
 	public String getTo() {
-		return to.toUpperCase();
+		if(to != null) {
+			return to.toUpperCase();
+		}
+		return null;
 	}
 
 	public Integer getPrice() {

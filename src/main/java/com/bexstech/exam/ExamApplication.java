@@ -15,7 +15,7 @@ import com.bexstech.exam.dto.RouteResponseDTO;
 import com.bexstech.exam.exception.BadRequestException;
 import com.bexstech.exam.service.RouteService;
 import com.bexstech.exam.util.ReadFile;
-import com.bexstech.exam.util.RoutesSingleton;
+import com.bexstech.exam.singleton.RouteSingleton;
 
 @SpringBootApplication
 public class ExamApplication implements ApplicationRunner {
@@ -30,8 +30,8 @@ public class ExamApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         List<RouteDTO> routeDTOS = ReadFile.readCSV( filePath );
-        RoutesSingleton.getInstance().updateRoutes( routeDTOS );
-        RoutesSingleton.getInstance().updateFilePath( filePath );
+        RouteSingleton.getInstance().updateRoutes( routeDTOS );
+        RouteSingleton.getInstance().updateFilePath( filePath );
 
         Scanner scanner = new Scanner(System.in);
 
@@ -42,7 +42,7 @@ public class ExamApplication implements ApplicationRunner {
 
             try {
                 RouteService routeService = new RouteService();
-                RouteResponseDTO routeResponseDTO = routeService.findRoute( route, RoutesSingleton.getInstance().getRouteModels() );
+                RouteResponseDTO routeResponseDTO = routeService.findRoute( route, RouteSingleton.getInstance().getRouteModels() );
 
                 System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
             } catch (BadRequestException e) {

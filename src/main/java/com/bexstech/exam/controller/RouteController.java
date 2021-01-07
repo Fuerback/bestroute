@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bexstech.exam.dto.RouteDTO;
 import com.bexstech.exam.service.RouteService;
-import com.bexstech.exam.util.RoutesSingleton;
+import com.bexstech.exam.singleton.RouteSingleton;
 
 @RestController
 @RequestMapping("route")
@@ -26,7 +26,7 @@ public class RouteController {
 
     @GetMapping
     public ResponseEntity findRoute(@RequestParam String from, @RequestParam String to) {
-        return ResponseEntity.ok( routeService.findRoute( from + "-" + to, RoutesSingleton.getInstance().getRouteModels() ).toString() );
+        return ResponseEntity.ok( routeService.findRoute( from + "-" + to, RouteSingleton.getInstance().getRouteModels() ).toString() );
     }
 
     @PutMapping
