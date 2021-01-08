@@ -1,0 +1,41 @@
+summary: "Operations related to flights routes"
+
+get:
+  summary: "Find the cheapest route between two locations"
+  tags:
+    - "Route"
+  parameters:
+    - in: query
+      name: from
+      schema:
+        type: string
+      required: true
+    - in: query
+      name: to
+      schema:
+       type: string
+      required: true
+
+  operationId: findRoute
+
+  responses:
+    "200":
+      description: "Success"
+
+put:
+  summary: "Insert a new flight route and your price"
+  tags:
+    - "Route"
+
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/route-response.yaml'
+    required: true
+
+  operationId: insertRoute
+
+  responses:
+    "200":
+      description: "Success"

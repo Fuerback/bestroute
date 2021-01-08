@@ -1,0 +1,14 @@
+openapi: 3.0.2
+info:
+  title: "API BestRoute"
+  description: "Best Route API description"
+  version: "1.0"
+
+tags:
+  - name: "Route"
+    description: "Operations related to flights routes"
+
+paths:
+  # Route
+  /route:
+    $ref: 'components/paths/route.yaml'

@@ -1,0 +1,9 @@
+type: object
+properties:
+  routeDescription:
+    type: string
+    example: GRU-FLN
+  totalPrice:
+    type: integer
+    format: int32
+    example: 25
