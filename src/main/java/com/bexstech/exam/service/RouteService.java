@@ -22,14 +22,10 @@ public class RouteService {
 
     private String routeDescription;
     private Integer totalPrice;
-    private final List<RouteResponseDTO> routeResultDTOS;
+    private List<RouteResponseDTO> routeResultDTOS;
     private RouteDTO currentRoute;
 
-    public RouteService() {
-        this.routeDescription = "";
-        this.totalPrice = 0;
-        this.routeResultDTOS = new ArrayList();
-    }
+    public RouteService() {}
 
     public RouteResponseDTO findRoute(String route, List<RouteDTO> routeDTOS) {
         if( ValidateInput.isValid( route ) ) {
@@ -38,14 +34,15 @@ public class RouteService {
             validateRoute( routeDTOS, currentRoute );
 
             List<RouteDTO> staringPoints = findStaringPoints( currentRoute.getFrom(), routeDTOS );
+            this.routeResultDTOS = new ArrayList();
 
-            staringPoints.forEach(currentRoute -> {
+            staringPoints.forEach(startRoute -> {
                 routeDescription = this.currentRoute.getFrom();
-                totalPrice = 0;
-                buildRoute(currentRoute, this.currentRoute.getTo(), routeDTOS );
+                this.totalPrice = 0;
+                buildRoute(startRoute, this.currentRoute.getTo(), routeDTOS );
             });
 
-            return findCheaperRoute();
+            return findCheapestRoute();
         } else {
             throw new BadRequestException("invalid input");
         }
@@ -64,18 +61,15 @@ public class RouteService {
     private void validateRoute(List<RouteDTO> routeDTOS, RouteDTO routeDTO) {
         routeDTOS.stream()
                 .filter( route -> route.getFrom().equalsIgnoreCase( routeDTO.getFrom() ) )
-                .findAny()
-                .orElseThrow( () -> new BadRequestException( "unknown start point" ) );
-        routeDTOS.stream()
                 .filter( route -> route.getTo().equalsIgnoreCase( routeDTO.getTo() ) )
                 .findAny()
-                .orElseThrow( () -> new BadRequestException( "unknown destination" ) );
+                .orElseThrow( () -> new BadRequestException( "unknown route" ) );
     }
 
-    private RouteResponseDTO findCheaperRoute() {
+    private RouteResponseDTO findCheapestRoute() {
         return routeResultDTOS.stream()
                 .min( Comparator.comparing( RouteResponseDTO::getTotalPrice ) )
-                .orElseThrow( NoSuchElementException::new );
+                .orElseThrow( () -> new NoSuchElementException("no routes found") );
     }
 
     private List<RouteDTO> findStaringPoints(String startingPoint, List<RouteDTO> routeDTOS) {
@@ -88,12 +82,18 @@ public class RouteService {
         routeDescription += " - " + routeDTO.getTo();
         totalPrice += routeDTO.getPrice();
         String currentDestination = routeDTO.getTo();
-        if(currentDestination.equalsIgnoreCase( this.currentRoute.getFrom() )){return;}
+
+        if( isCyclicalRoute(currentDestination) ){ return; }
+
         if (!currentDestination.equalsIgnoreCase(destination)) {
             List<RouteDTO> staringPoints = findStaringPoints( routeDTO.getTo(), routeDTOS );
             staringPoints.forEach(currentRoute -> buildRoute(currentRoute, destination, routeDTOS ));
         } else {
             routeResultDTOS.add(new RouteResponseDTO(routeDescription, totalPrice));
         }
+    }
+
+    private boolean isCyclicalRoute(String currentDestination) {
+        return currentDestination.equalsIgnoreCase( this.currentRoute.getFrom() );
     }
 }

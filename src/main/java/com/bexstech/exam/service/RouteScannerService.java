@@ -38,9 +38,9 @@ public class RouteScannerService {
 
 				System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
 			} catch (BadRequestException e) {
-				System.out.println(String.format(e.getMessage()));
+				System.out.println(e.getMessage());
 			} catch (NoSuchElementException e) {
-				System.out.println(String.format("no routes found"));
+				System.out.println("no routes found");
 			}
 		}
 	}

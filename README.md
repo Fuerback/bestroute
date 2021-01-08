@@ -117,7 +117,11 @@ paths:
       operationId: findRoute
       responses:
         '200':
-          description: Success
+          description: success
+        '400':
+          description: invalid input
+        '404':
+          description: no routes found
     put:
       summary: Insert a new flight route and your price
       tags:
@@ -130,8 +134,10 @@ paths:
         required: true
       operationId: insertRoute
       responses:
-        '200':
-          description: Success
+        '204':
+          description: success
+        '400':
+          description: invalid input
 components:
   schemas:
     route-response:

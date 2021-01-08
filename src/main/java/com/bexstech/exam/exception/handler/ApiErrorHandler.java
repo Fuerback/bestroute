@@ -1,5 +1,7 @@
 package com.bexstech.exam.exception.handler;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,6 +18,12 @@ public class ApiErrorHandler {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value = { BadRequestException.class })
 	public ApiError onError(BadRequestException exception) {
+		return buildApiError( exception );
+	}
+
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ExceptionHandler(value = { NoSuchElementException.class })
+	public ApiError onError(NoSuchElementException exception) {
 		return buildApiError( exception );
 	}
 
