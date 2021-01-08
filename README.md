@@ -26,7 +26,50 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--file=/home/folder/routes.csv
 #Packages and Files Structure
 
 ```sh
-// todo
+├── resources
+│    └── routes.csv
+├── src
+│    ├── main
+│        ├── java
+│        │   └── com
+│        │       └── bexstech
+│        │           └── exam
+│        │               ├── controller
+│        │               │   └── RouteController.java
+│        │               ├── dto
+│        │               │   ├── RouteDTO.java
+│        │               │   └── RouteResponseDTO.java
+│        │               ├── ExamApplication.java
+│        │               ├── exception
+│        │               │   ├── api
+│        │               │       └── ApiError.java
+│        │               │   ├── BadRequestException.java
+│        │               │   └── handler
+│        │               │       └── ApiErrorHandler.java
+│        │               ├── service
+│        │               │   ├── RouteScannerService.java
+│        │               │   └── RouteService.java
+│        │               ├── singleton
+│        │               │   └── RouteSingleton.java
+│        │               ├── util
+│        │               │   ├── ReadFile.java
+│        │               │   └── WriteFile.java
+│        │               └── validation
+│        │                   └── ValidateInput.java
+│        └── resources
+│        │   └── application.properties
+│        └── test
+│           └── java
+│                └── com
+│                    └── bexstech
+│                        └── exam
+│                            ├── controller
+│                            │   └── RouteControllerTest.java
+│                            ├── service
+│                            │       ├── RouteScannerServiceTest.java
+│                            │       └── RouteServiceTest.java
+│                            └── validation
+│                                └── ValidateInputTest.java
 ```
 
 # Testing
