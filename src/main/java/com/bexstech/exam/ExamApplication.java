@@ -2,6 +2,7 @@ package com.bexstech.exam;
 
 import java.util.List;
 
+import com.bexstech.exam.model.Graph;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -32,10 +33,22 @@ public class ExamApplication implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         List<RouteDTO> routeDTOS = ReadFile.readCSV( filePath );
+
+        Graph graph = ReadFile.readCSVGraph(filePath);
+//        DijkstraAlgorithm engine = new DijkstraAlgorithm(graph);
+
         RouteSingleton.getInstance().updateRoutes( routeDTOS );
         RouteSingleton.getInstance().updateFilePath( filePath );
 
-        routeScannerService.scan( routeDTOS );
+//        try {
+//            System.out.println(engine.calculateShortestPath("GRU", "CDG"));
+//
+//        } catch (BadRequestException e) {
+//            System.out.println(e.getMessage());
+//        }
+
+//        routeScannerService.scan( routeDTOS );
+        routeScannerService.scan2( graph );
     }
 
 }

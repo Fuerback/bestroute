@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+import com.bexstech.exam.model.Graph;
 import org.springframework.stereotype.Service;
 
 import com.bexstech.exam.dto.RouteDTO;
@@ -41,6 +42,29 @@ public class RouteScannerService {
 				System.out.println(e.getMessage());
 			} catch (NoSuchElementException e) {
 				System.out.println("no routes found");
+			}
+		}
+	}
+
+	public void scan2(Graph graph) {
+		Scanner scanner = new Scanner(System.in);
+		RouteService routeService;
+		String route;
+		List<RouteDTO> routeModels = RouteSingleton.getInstance().getRouteModels();
+
+		while (!routeModels.isEmpty()) {
+			System.out.print("please enter the route: ");
+
+			route = scanner.nextLine();
+
+			if(EXIT.equalsIgnoreCase( route )) {System.out.println(route); break;}
+
+			try {
+				routeService = new RouteService();
+				routeService.find( graph, route );
+
+			} catch (BadRequestException | IllegalArgumentException e) {
+				System.out.println(e.getMessage());
 			}
 		}
 	}
