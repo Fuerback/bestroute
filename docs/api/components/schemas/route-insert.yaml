@@ -1,9 +1,12 @@
 type: object
 properties:
-  routeDescription:
+  source:
     type: string
-    example: GRU - FLN - CRT
-  totalPrice:
+    example: GRU
+  destination:
+    type: string
+    example: FLN
+  price:
     type: integer
     format: int32
     example: 25

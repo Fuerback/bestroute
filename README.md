@@ -1,5 +1,5 @@
 # BestRoute
-Help to find the cheaper route for your trip.
+The BestRoute is a system that helps you to find the cheaper route for your trip using a graph data structure.
 
 # Requirements
 
@@ -26,57 +26,79 @@ mvn spring-boot:run -Dspring-boot.run.arguments=--file=/home/folder/routes.csv
 # Packages and Files Structure
 
 ```sh
+.
+├── docs
+│	└── api
+│	    ├── components
+│	    │	├── paths
+│	    │	│	└── route.yaml
+│	    │	└── schemas
+│	    │	    ├── route-insert.yaml
+│	    │	    └── route-response.yaml
+│	    └── openapi.yaml
+├── README.md
 ├── resources
-│    └── routes.csv
+│	└── routes.csv
 ├── src
-│    ├── main
-│        ├── java
-│        │   └── com
-│        │       └── bexstech
-│        │           └── exam
-│        │               ├── controller
-│        │               │   └── RouteController.java
-│        │               ├── dto
-│        │               │   ├── RouteDTO.java
-│        │               │   └── RouteResponseDTO.java
-│        │               ├── ExamApplication.java
-│        │               ├── exception
-│        │               │   ├── api
-│        │               │       └── ApiError.java
-│        │               │   ├── BadRequestException.java
-│        │               │   └── handler
-│        │               │       └── ApiErrorHandler.java
-│        │               ├── service
-│        │               │   ├── RouteScannerService.java
-│        │               │   └── RouteService.java
-│        │               ├── singleton
-│        │               │   └── RouteSingleton.java
-│        │               ├── util
-│        │               │   ├── ReadFile.java
-│        │               │   └── WriteFile.java
-│        │               └── validation
-│        │                   └── ValidateInput.java
-│        └── resources
-│        │   └── application.properties
-│        └── test
-│           └── java
-│                └── com
-│                    └── bexstech
-│                        └── exam
-│                            ├── controller
-│                            │   └── RouteControllerTest.java
-│                            ├── service
-│                            │       ├── RouteScannerServiceTest.java
-│                            │       └── RouteServiceTest.java
-│                            └── validation
-│                                └── ValidateInputTest.java
+│	├── main
+│	│	├── java
+│	│	│	└── com
+│	│	│	    └── bexstech
+│	│	│	        └── exam
+│	│	│	            ├── controller
+│	│	│	            │	└── RouteController.java
+│	│	│	            ├── dto
+│	│	│	            │	├── RouteDTO.java
+│	│	│	            │	└── RouteResponseDTO.java
+│	│	│	            ├── engine
+│	│	│	            │	└── DijkstraAlgorithm.java
+│	│	│	            ├── ExamApplication.java
+│	│	│	            ├── exception
+│	│	│	            │	├── api
+│	│	│	            │	│	└── ApiError.java
+│	│	│	            │	├── BadRequestException.java
+│	│	│	            │	├── handler
+│	│	│	            │	│	└── ApiErrorHandler.java
+│	│	│	            │	└── NotFoundException.java
+│	│	│	            ├── model
+│	│	│	            │	├── CheapestPath.java
+│	│	│	            │	├── Edge.java
+│	│	│	            │	├── Graph.java
+│	│	│	            │	└── Vertex.java
+│	│	│	            ├── service
+│	│	│	            │	├── RouteScannerService.java
+│	│	│	            │	└── RouteService.java
+│	│	│	            ├── singleton
+│	│	│	            │	└── RouteSingleton.java
+│	│	│	            ├── util
+│	│	│	            │	├── ReadFile.java
+│	│	│	            │	└── WriteFile.java
+│	│	│	            └── validation
+│	│	│	                └── ValidateInput.java
+│	│	└── resources
+│	│	    └── application.properties
+│	└── test
+│	    └── java
+│	        └── com
+│	            └── bexstech
+│	                └── exam
+│	                    ├── controller
+│	                    │	└── RouteControllerTest.java
+│	                    ├── engine
+│	                    │	└── DijkstraAlgorithmTest.java
+│	                    ├── service
+│	                    │	├── RouteScannerServiceTest.java
+│	                    │	└── RouteServiceTest.java
+│	                    └── validation
+│	                        └── ValidateInputTest.java
+
 ```
 
 # API Documentation
 
 The API documentation was wrote using Swagger Editor.
 
-![api-bestroute](https://user-images.githubusercontent.com/3007452/104042171-e1db2580-51b8-11eb-96d6-98a91b863c1a.png)
+![api](https://user-images.githubusercontent.com/3007452/104110886-ca846100-52ba-11eb-9369-5db7343c8e67.png)
 
 To open the full documentation, follow the steps:
 
@@ -105,12 +127,12 @@ paths:
         - Route
       parameters:
         - in: query
-          name: from
+          name: source
           schema:
             type: string
           required: true
         - in: query
-          name: to
+          name: destination
           schema:
             type: string
           required: true
@@ -118,6 +140,10 @@ paths:
       responses:
         '200':
           description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/route-response'
         '400':
           description: invalid input
         '404':
@@ -130,7 +156,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/route-response'
+              $ref: '#/components/schemas/route-insert'
         required: true
       operationId: insertRoute
       responses:
@@ -145,11 +171,25 @@ components:
       properties:
         routeDescription:
           type: string
-          example: GRU-FLN
+          example: GRU - FLN - CRT
         totalPrice:
           type: integer
           format: int32
           example: 25
+    route-insert:
+      type: object
+      properties:
+        source:
+          type: string
+          example: GRU
+        destination:
+          type: string
+          example: FLN
+        price:
+          type: integer
+          format: int32
+          example: 25
+
 
 ```
 </details>

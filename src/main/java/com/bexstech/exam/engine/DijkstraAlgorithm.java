@@ -1,13 +1,14 @@
 package com.bexstech.exam.engine;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.exception.NotFoundException;
 import com.bexstech.exam.model.CheapestPath;
 import com.bexstech.exam.model.Edge;
 import com.bexstech.exam.model.Graph;
 import com.bexstech.exam.model.Vertex;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class DijkstraAlgorithm {
     private Set<Vertex> unsettledNodes;
@@ -36,7 +37,7 @@ public class DijkstraAlgorithm {
         CheapestPath sp = destination.getCheapestPath();
         if (sp == null) {
             graph.resetGraph();
-            throw new BadRequestException("Route from '" + source + "' to '" + destination + "' doesn't exist");
+            throw new NotFoundException("Route from '" + source + "' to '" + destination + "' doesn't exist");
         }
         this.graph.setChosenShortestPath(sp);
         return sp;

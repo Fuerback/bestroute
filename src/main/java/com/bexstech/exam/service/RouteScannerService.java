@@ -1,11 +1,12 @@
 package com.bexstech.exam.service;
 
-import com.bexstech.exam.exception.BadRequestException;
-import com.bexstech.exam.model.Graph;
-import com.bexstech.exam.singleton.RouteSingleton;
+import java.util.Scanner;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Scanner;
+import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.exception.NotFoundException;
+import com.bexstech.exam.singleton.RouteSingleton;
 
 @Service
 public class RouteScannerService {
@@ -33,7 +34,7 @@ public class RouteScannerService {
             try {
                 routeService = new RouteService();
                 System.out.println("best route: " + routeService.find(RouteSingleton.getInstance().getGraph(), route).toString());
-            } catch (BadRequestException | IllegalArgumentException e) {
+            } catch (BadRequestException | IllegalArgumentException | NotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }

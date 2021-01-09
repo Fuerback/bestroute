@@ -6,12 +6,12 @@ get:
     - "Route"
   parameters:
     - in: query
-      name: from
+      name: source
       schema:
         type: string
       required: true
     - in: query
-      name: to
+      name: destination
       schema:
        type: string
       required: true
@@ -21,6 +21,10 @@ get:
   responses:
     "200":
       description: "success"
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/route-response.yaml'
     "400":
       description: "invalid input"
     "404":
@@ -35,7 +39,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../schemas/route-response.yaml'
+          $ref: '../schemas/route-insert.yaml'
     required: true
 
   operationId: insertRoute
