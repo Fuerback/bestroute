@@ -10,16 +10,13 @@ public class Edge {
         if (price < 1) {
             throw new IllegalArgumentException("The price has to be an positive integer!");
         }
-        this.source = (source.getLabel().compareTo(destination.getLabel()) <= 0) ? source : destination;
-        this.destination = (this.source == source) ? destination : source;
+        this.source = source;
+        this.destination = destination;
         this.price = price;
     }
 
-    public Vertex getNeighbor(Vertex current) {
-        if (!(current.equals(source) || current.equals(destination))) {
-            return null;
-        }
-        return (current.equals(source)) ? destination : source;
+    public Vertex getNeighbor() {
+        return destination;
     }
 
     public int getPrice() {

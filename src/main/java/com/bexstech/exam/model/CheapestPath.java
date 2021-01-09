@@ -1,6 +1,10 @@
 package com.bexstech.exam.model;
 
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.StringJoiner;
 
 public class CheapestPath extends AbstractCollection<Edge> {
     private List<Edge> pathList;
@@ -43,10 +47,10 @@ public class CheapestPath extends AbstractCollection<Edge> {
 
     public String pathListToString(String delimiter) {
         StringJoiner stringJoiner = new StringJoiner(delimiter);
-        Vertex current = source;
+        Vertex current;
         stringJoiner.add(source.getLabel());
         for (Edge e : pathList) {
-            current = e.getNeighbor(current);
+            current = e.getNeighbor();
             stringJoiner.add(current.getLabel());
         }
 

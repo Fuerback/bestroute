@@ -35,6 +35,7 @@ public class DijkstraAlgorithm {
 
         CheapestPath sp = destination.getCheapestPath();
         if (sp == null) {
+            graph.resetGraph();
             throw new BadRequestException("Route from '" + source + "' to '" + destination + "' doesn't exist");
         }
         this.graph.setChosenShortestPath(sp);
@@ -61,7 +62,7 @@ public class DijkstraAlgorithm {
     }
 
     private void updateCheapestNeighbor(Edge e) {
-        Vertex neighbor = e.getNeighbor(currentVertex);
+        Vertex neighbor = e.getNeighbor();
         if (!neighbor.getVisited()) {
             Integer newPrice = currentVertex.getPrice() + e.getPrice();
             if (neighbor.getPrice() > newPrice) {
