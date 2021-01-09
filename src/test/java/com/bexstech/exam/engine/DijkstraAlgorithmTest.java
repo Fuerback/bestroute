@@ -1,17 +1,18 @@
 package com.bexstech.exam.engine;
 
-import com.bexstech.exam.exception.BadRequestException;
-import com.bexstech.exam.model.CheapestPath;
-import com.bexstech.exam.model.Graph;
-import com.bexstech.exam.util.ReadFile;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.model.CheapestPath;
+import com.bexstech.exam.model.Graph;
+import com.bexstech.exam.util.ReadFile;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DijkstraAlgorithmTest {
@@ -34,6 +35,12 @@ public class DijkstraAlgorithmTest {
                 () -> assertEquals(expectedString, outcome.pathListToString(" - ")),
                 () -> assertEquals(expectedPrice, outcome.getPrice())
         );
+    }
+
+    @Test(expected = BadRequestException.class)
+    @DisplayName("should not find reverse route")
+    public void shouldNotFindReverseRouteAndPrice() {
+        engine.calculateShortestPath("CDG", "GRU");
     }
 
     @Test(expected = BadRequestException.class)

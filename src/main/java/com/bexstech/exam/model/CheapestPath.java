@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 
+import com.bexstech.exam.dto.RouteResponseDTO;
+
 public class CheapestPath extends AbstractCollection<Edge> {
     private List<Edge> pathList;
     private Vertex source;
@@ -43,6 +45,10 @@ public class CheapestPath extends AbstractCollection<Edge> {
     @Override
     public String toString() {
         return pathListToString(" - ") + " > $" + price;
+    }
+
+    public RouteResponseDTO toRouteResponseDTO() {
+        return new RouteResponseDTO( pathListToString(" - "), price );
     }
 
     public String pathListToString(String delimiter) {

@@ -26,7 +26,7 @@ public class RouteController {
 
     @GetMapping
     public ResponseEntity findRoute(@RequestParam String from, @RequestParam String to) {
-        return ResponseEntity.ok( routeService.find( RouteSingleton.getInstance().getGraph(), from + "-" + to ).toString() );
+        return ResponseEntity.ok( routeService.find( RouteSingleton.getInstance().getGraph(), from + "-" + to ).toRouteResponseDTO() );
     }
 
     @PutMapping

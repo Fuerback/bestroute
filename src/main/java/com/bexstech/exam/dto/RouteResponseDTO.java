@@ -17,8 +17,4 @@ public class RouteResponseDTO {
 	public String getRouteDescription() {
 		return routeDescription;
 	}
-
-	@Override public String toString() {
-		return routeDescription + " > $" + totalPrice;
-	}
 }

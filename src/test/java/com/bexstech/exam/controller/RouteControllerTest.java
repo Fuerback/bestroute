@@ -1,10 +1,14 @@
 package com.bexstech.exam.controller;
 
-import com.bexstech.exam.dto.RouteDTO;
-import com.bexstech.exam.model.CheapestPath;
-import com.bexstech.exam.model.Vertex;
-import com.bexstech.exam.service.RouteScannerService;
-import com.bexstech.exam.service.RouteService;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+
+import java.io.IOException;
+import java.net.URI;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,13 +20,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.IOException;
-import java.net.URI;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.dto.RouteResponseDTO;
+import com.bexstech.exam.model.CheapestPath;
+import com.bexstech.exam.model.Vertex;
+import com.bexstech.exam.service.RouteScannerService;
+import com.bexstech.exam.service.RouteService;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, args = "--file=./resources/routes.csv")
 public class RouteControllerTest {
@@ -52,9 +55,12 @@ public class RouteControllerTest {
 
         doReturn(cheapestPath).when(routeService).find(any(), any());
 
-        String forObject = restTemplate.getForObject(targetUrl, String.class);
+        RouteResponseDTO routeResponseDTO = restTemplate.getForObject(targetUrl, RouteResponseDTO.class);
 
-        assertThat(forObject).contains("GRU-CDG > $20");
+        assertAll("Route and Price",
+                () -> assertEquals(routeResponseDTO.getRouteDescription(), "GRU-CDG"),
+                () -> assertEquals(routeResponseDTO.getTotalPrice(), 20)
+        );
         verify(routeService).find(any(), any());
     }
 
