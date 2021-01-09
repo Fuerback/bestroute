@@ -19,7 +19,6 @@ public class RouteScannerService {
         Scanner scanner = new Scanner(System.in);
         RouteService routeService;
         String route;
-        Graph graph = RouteSingleton.getInstance().getGraph();
 
         while (true) {
             System.out.print("please enter the route: ");
@@ -33,7 +32,7 @@ public class RouteScannerService {
 
             try {
                 routeService = new RouteService();
-                System.out.println("best route: " + routeService.find(graph, route).toString());
+                System.out.println("best route: " + routeService.find(RouteSingleton.getInstance().getGraph(), route).toString());
             } catch (BadRequestException | IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }

@@ -25,7 +25,7 @@ public class ValidateInput {
 
 	private static boolean isValidPrice(RouteDTO routeDTOInput) {
 		return routeDTOInput.getPrice() != null &&
-				routeDTOInput.getPrice() >= 0;
+				routeDTOInput.getPrice() > 0;
 	}
 
 	private static boolean isOnlyLetters(RouteDTO routeDTOInput) {
