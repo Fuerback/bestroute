@@ -1,26 +1,26 @@
 package com.bexstech.exam.dto;
 
 public class RouteDTO {
-	private String from;
-	private String to;
+	private String source;
+	private String destination;
 	private Integer price;
 
-	public RouteDTO(String from, String to, Integer price) {
-		this.from = from;
-		this.to = to;
+	public RouteDTO(String source, String destination, Integer price) {
+		this.source = source;
+		this.destination = destination;
 		this.price = price;
 	}
 
-	public String getFrom() {
-		if(from != null) {
-			return from.toUpperCase();
+	public String getSource() {
+		if(source != null) {
+			return source.toUpperCase();
 		}
 		return null;
 	}
 
-	public String getTo() {
-		if(to != null) {
-			return to.toUpperCase();
+	public String getDestination() {
+		if(destination != null) {
+			return destination.toUpperCase();
 		}
 		return null;
 	}
@@ -35,6 +35,6 @@ public class RouteDTO {
 	}
 
 	@Override public String toString() {
-		return this.from + " - " + this.to + " > $" + this.price;
+		return this.source + " - " + this.destination + " > $" + this.price;
 	}
 }

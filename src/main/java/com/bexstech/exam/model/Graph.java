@@ -8,7 +8,7 @@ public class Graph {
 
     private HashMap<String, Vertex> vertices;
     private HashMap<Integer, Edge> edges;
-    private ShortestPath chosenShortestPath;
+    private CheapestPath chosenCheapestPath;
 
     public Graph() {
         this.vertices = new HashMap<>();
@@ -31,9 +31,7 @@ public class Graph {
             return false;
         } else if (!(vertices.containsValue(source) || vertices.containsValue(destination))) {
             return false;
-        }
-
-        else if (source.containsNeighbor(e) || destination.containsNeighbor(e)) {
+        } else if (source.containsNeighbor(e) || destination.containsNeighbor(e)) {
             return false;
         }
 
@@ -53,14 +51,14 @@ public class Graph {
 
     public void resetGraph() {
         vertices.values().forEach(Vertex::reset);
-        chosenShortestPath = null;
+        chosenCheapestPath = null;
     }
 
-    public ShortestPath getChosenShortestPath() {
-        return chosenShortestPath;
+    public CheapestPath getChosenShortestPath() {
+        return chosenCheapestPath;
     }
 
-    public void setChosenShortestPath(ShortestPath chosenShortestPath) {
-        this.chosenShortestPath = chosenShortestPath;
+    public void setChosenShortestPath(CheapestPath chosenCheapestPath) {
+        this.chosenCheapestPath = chosenCheapestPath;
     }
 }

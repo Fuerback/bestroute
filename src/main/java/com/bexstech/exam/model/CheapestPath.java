@@ -2,20 +2,20 @@ package com.bexstech.exam.model;
 
 import java.util.*;
 
-public class ShortestPath extends AbstractCollection<Edge> {
+public class CheapestPath extends AbstractCollection<Edge> {
     private List<Edge> pathList;
     private Vertex source;
     private Vertex destination;
     private Integer price;
 
-    public ShortestPath(Vertex startingVertex) {
+    public CheapestPath(Vertex startingVertex) {
         pathList = new LinkedList<>();
         source = startingVertex;
         destination = startingVertex;
         price = 0;
     }
 
-    public ShortestPath(ShortestPath other) {
+    public CheapestPath(CheapestPath other) {
         this.pathList = new LinkedList<>(other.pathList);
         this.source = other.source;
         this.destination = other.destination;
@@ -38,7 +38,7 @@ public class ShortestPath extends AbstractCollection<Edge> {
 
     @Override
     public String toString() {
-        return "best route: " + pathListToString(" - ") + " > $" + price;
+        return pathListToString(" - ") + " > $" + price;
     }
 
     public String pathListToString(String delimiter) {
@@ -53,8 +53,12 @@ public class ShortestPath extends AbstractCollection<Edge> {
         return stringJoiner.toString();
     }
 
-    public void setPrice(Integer distance) {
-        this.price = distance;
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Integer getPrice() {
+        return price;
     }
 
     public void setDestination(Vertex destination) {

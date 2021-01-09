@@ -29,26 +29,26 @@ public class ValidateInput {
 	}
 
 	private static boolean isOnlyLetters(RouteDTO routeDTOInput) {
-		return routeDTOInput.getFrom().matches( "^[a-zA-Z]*$" ) &&
-				routeDTOInput.getTo().matches( "^[a-zA-Z]*$" );
+		return routeDTOInput.getSource().matches( "^[a-zA-Z]*$" ) &&
+				routeDTOInput.getDestination().matches( "^[a-zA-Z]*$" );
 	}
 
 	private static boolean sizeIsThree(RouteDTO routeDTOInput) {
-		return routeDTOInput.getFrom().length() == 3 &&
-				routeDTOInput.getTo().length() == 3;
+		return routeDTOInput.getSource().length() == 3 &&
+				routeDTOInput.getDestination().length() == 3;
 	}
 
 	private static boolean isNotSameRoute(RouteDTO routeDTOInput) {
-		return !routeDTOInput.getFrom().equalsIgnoreCase( routeDTOInput.getTo() );
+		return !routeDTOInput.getSource().equalsIgnoreCase( routeDTOInput.getDestination() );
 	}
 
 	private static boolean isNotEmpty(RouteDTO routeDTOInput) {
-		return !routeDTOInput.getFrom().isEmpty() &&
-				!routeDTOInput.getTo().isEmpty();
+		return !routeDTOInput.getSource().isEmpty() &&
+				!routeDTOInput.getDestination().isEmpty();
 	}
 
 	private static boolean isNotNull(RouteDTO routeDTOInput) {
-		return routeDTOInput.getTo() != null &&
-				routeDTOInput.getFrom() != null;
+		return routeDTOInput.getDestination() != null &&
+				routeDTOInput.getSource() != null;
 	}
 }

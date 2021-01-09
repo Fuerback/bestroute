@@ -1,9 +1,9 @@
 package com.bexstech.exam.engine;
 
 import com.bexstech.exam.exception.BadRequestException;
+import com.bexstech.exam.model.CheapestPath;
 import com.bexstech.exam.model.Edge;
 import com.bexstech.exam.model.Graph;
-import com.bexstech.exam.model.ShortestPath;
 import com.bexstech.exam.model.Vertex;
 
 import java.util.HashSet;
@@ -18,7 +18,7 @@ public class DijkstraAlgorithm {
         this.graph = graph;
     }
 
-    public ShortestPath calculateShortestPath(Vertex source, Vertex destination) throws BadRequestException {
+    public CheapestPath calculateShortestPath(Vertex source, Vertex destination) throws BadRequestException {
         if (graph.getChosenShortestPath() != null) {
             graph.resetGraph();
         }
@@ -27,13 +27,13 @@ public class DijkstraAlgorithm {
         unsettledNodes.add(source);
 
         while (unsettledNodes.size() != 0 && !destination.equals(currentVertex)) {
-            currentVertex = getCheapestDistanceVertex();
+            currentVertex = getCheapestVertex();
             for (Edge e : currentVertex) {
-                updateNeighborDistance(e);
+                updateCheapestNeighbor(e);
             }
         }
 
-        ShortestPath sp = destination.getCheapestPath();
+        CheapestPath sp = destination.getCheapestPath();
         if (sp == null) {
             throw new BadRequestException("Route from '" + source + "' to '" + destination + "' doesn't exist");
         }
@@ -41,34 +41,34 @@ public class DijkstraAlgorithm {
         return sp;
     }
 
-    public ShortestPath calculateShortestPath(String sourceLabel, String destinationLabel) throws BadRequestException {
+    public CheapestPath calculateShortestPath(String sourceLabel, String destinationLabel) throws BadRequestException {
         return calculateShortestPath(graph.getVertex(sourceLabel), graph.getVertex(destinationLabel));
     }
 
-    private Vertex getCheapestDistanceVertex() {
-        Vertex lowestDistanceNode = null;
-        int lowestDistance = Integer.MAX_VALUE;
+    private Vertex getCheapestVertex() {
+        Vertex cheapestNode = null;
+        int cheapestPrice = Integer.MAX_VALUE;
         for (Vertex v : unsettledNodes) {
-            int nodeDistance = v.getPrice();
-            if (nodeDistance < lowestDistance) {
-                lowestDistance = nodeDistance;
-                lowestDistanceNode = v;
+            int nodePrice = v.getPrice();
+            if (nodePrice < cheapestPrice) {
+                cheapestPrice = nodePrice;
+                cheapestNode = v;
             }
         }
-        lowestDistanceNode.visit();
+        cheapestNode.visit();
         unsettledNodes.remove(currentVertex);
-        return lowestDistanceNode;
+        return cheapestNode;
     }
 
-    private void updateNeighborDistance(Edge e) {
+    private void updateCheapestNeighbor(Edge e) {
         Vertex neighbor = e.getNeighbor(currentVertex);
         if (!neighbor.getVisited()) {
-            Integer newDistance = currentVertex.getPrice() + e.getPrice();
-            if (neighbor.getPrice() > newDistance) {
-                neighbor.setPrice(newDistance);
-                ShortestPath shortestPath = new ShortestPath(currentVertex.getCheapestPath());
-                shortestPath.addEdge(e);
-                neighbor.setCheapestPath(shortestPath);
+            Integer newPrice = currentVertex.getPrice() + e.getPrice();
+            if (neighbor.getPrice() > newPrice) {
+                neighbor.setPrice(newPrice);
+                CheapestPath cheapestPath = new CheapestPath(currentVertex.getCheapestPath());
+                cheapestPath.addEdge(e);
+                neighbor.setCheapestPath(cheapestPath);
                 unsettledNodes.add(neighbor);
             }
         }

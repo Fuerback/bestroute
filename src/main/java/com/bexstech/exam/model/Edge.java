@@ -8,7 +8,7 @@ public class Edge {
 
     public Edge(Vertex source, Vertex destination, int price) {
         if (price < 1) {
-            throw new IllegalArgumentException("Edge weight has to be an positive integer!");
+            throw new IllegalArgumentException("The price has to be an positive integer!");
         }
         this.source = (source.getLabel().compareTo(destination.getLabel()) <= 0) ? source : destination;
         this.destination = (this.source == source) ? destination : source;
@@ -24,14 +24,6 @@ public class Edge {
 
     public int getPrice() {
         return this.price;
-    }
-
-    public String toString() {
-        return connectionToString("----") + ", " + price;
-    }
-
-    public String connectionToString(String delimiter) {
-        return source.getLabel() + delimiter + destination.getLabel();
     }
 
     public boolean equals(Object other) {

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bexstech.exam.dto.RouteDTO;
+import com.bexstech.exam.model.Graph;
 
 public class RouteSingleton {
 	private static RouteSingleton instance;
 	private List<RouteDTO> routeDTOS;
 	private String filePath;
+	private Graph graph;
 
 	private RouteSingleton() {
 		routeDTOS = new ArrayList<>();
@@ -28,6 +30,14 @@ public class RouteSingleton {
 
 	public synchronized void updateFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+
+	public synchronized void updateGraph(Graph graph) {
+		this.graph = graph;
+	}
+
+	public Graph getGraph() {
+		return graph;
 	}
 
 	public List<RouteDTO> getRouteModels() {

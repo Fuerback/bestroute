@@ -1,18 +1,14 @@
 package com.bexstech.exam;
 
-import java.util.List;
-
 import com.bexstech.exam.model.Graph;
+import com.bexstech.exam.service.RouteScannerService;
+import com.bexstech.exam.singleton.RouteSingleton;
+import com.bexstech.exam.util.ReadFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.bexstech.exam.dto.RouteDTO;
-import com.bexstech.exam.service.RouteScannerService;
-import com.bexstech.exam.singleton.RouteSingleton;
-import com.bexstech.exam.util.ReadFile;
 
 @SpringBootApplication
 public class ExamApplication implements ApplicationRunner {
@@ -32,23 +28,11 @@ public class ExamApplication implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        List<RouteDTO> routeDTOS = ReadFile.readCSV( filePath );
+        Graph graph = ReadFile.getGraphFromCSV(filePath);
+        RouteSingleton.getInstance().updateGraph(graph);
+        RouteSingleton.getInstance().updateFilePath(filePath);
 
-        Graph graph = ReadFile.readCSVGraph(filePath);
-//        DijkstraAlgorithm engine = new DijkstraAlgorithm(graph);
-
-        RouteSingleton.getInstance().updateRoutes( routeDTOS );
-        RouteSingleton.getInstance().updateFilePath( filePath );
-
-//        try {
-//            System.out.println(engine.calculateShortestPath("GRU", "CDG"));
-//
-//        } catch (BadRequestException e) {
-//            System.out.println(e.getMessage());
-//        }
-
-//        routeScannerService.scan( routeDTOS );
-        routeScannerService.scan2( graph );
+        routeScannerService.scan();
     }
 
 }

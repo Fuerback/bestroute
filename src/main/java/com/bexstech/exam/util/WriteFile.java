@@ -10,9 +10,9 @@ public class WriteFile {
 	public static void writeCSV(String filePath, RouteDTO routeDTO) throws IOException {
 		FileWriter csvWriter = new FileWriter(filePath, true);
 
-		csvWriter.append( routeDTO.getFrom());
+		csvWriter.append( routeDTO.getSource());
 		csvWriter.append(",");
-		csvWriter.append( routeDTO.getTo());
+		csvWriter.append( routeDTO.getDestination());
 		csvWriter.append(",");
 		csvWriter.append( routeDTO.getPrice().toString());
 		csvWriter.append("\n");

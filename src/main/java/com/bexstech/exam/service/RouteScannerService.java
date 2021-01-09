@@ -1,71 +1,42 @@
 package com.bexstech.exam.service;
 
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
+import com.bexstech.exam.exception.BadRequestException;
 import com.bexstech.exam.model.Graph;
+import com.bexstech.exam.singleton.RouteSingleton;
 import org.springframework.stereotype.Service;
 
-import com.bexstech.exam.dto.RouteDTO;
-import com.bexstech.exam.dto.RouteResponseDTO;
-import com.bexstech.exam.exception.BadRequestException;
-import com.bexstech.exam.singleton.RouteSingleton;
+import java.util.Scanner;
 
 @Service
 public class RouteScannerService {
 
-	private static String EXIT = "exit";
+    private static String EXIT = "exit";
 
-	public RouteScannerService() {
-	}
+    public RouteScannerService() {
+    }
 
-	public void scan(List<RouteDTO> routeDTOS) {
-		Scanner scanner = new Scanner(System.in);
-		RouteService routeService;
-		String route;
-		List<RouteDTO> routeModels = RouteSingleton.getInstance().getRouteModels();
+    public void scan() {
+        Scanner scanner = new Scanner(System.in);
+        RouteService routeService;
+        String route;
+        Graph graph = RouteSingleton.getInstance().getGraph();
 
-		while (!routeModels.isEmpty()) {
-			System.out.print("please enter the route: ");
+        while (true) {
+            System.out.print("please enter the route: ");
 
-			route = scanner.nextLine();
+            route = scanner.nextLine();
 
-			if(EXIT.equalsIgnoreCase( route )) {System.out.println(route); break;}
+            if (EXIT.equalsIgnoreCase(route)) {
+                System.out.println(route);
+                break;
+            }
 
-			try {
-				routeService = new RouteService();
-				RouteResponseDTO routeResponseDTO = routeService.findRoute( route, RouteSingleton.getInstance().getRouteModels() );
-
-				System.out.println(String.format("best route: %s", routeResponseDTO.toString()));
-			} catch (BadRequestException e) {
-				System.out.println(e.getMessage());
-			} catch (NoSuchElementException e) {
-				System.out.println("no routes found");
-			}
-		}
-	}
-
-	public void scan2(Graph graph) {
-		Scanner scanner = new Scanner(System.in);
-		RouteService routeService;
-		String route;
-		List<RouteDTO> routeModels = RouteSingleton.getInstance().getRouteModels();
-
-		while (!routeModels.isEmpty()) {
-			System.out.print("please enter the route: ");
-
-			route = scanner.nextLine();
-
-			if(EXIT.equalsIgnoreCase( route )) {System.out.println(route); break;}
-
-			try {
-				routeService = new RouteService();
-				routeService.find( graph, route );
-
-			} catch (BadRequestException | IllegalArgumentException e) {
-				System.out.println(e.getMessage());
-			}
-		}
-	}
+            try {
+                routeService = new RouteService();
+                System.out.println("best route: " + routeService.find(graph, route).toString());
+            } catch (BadRequestException | IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 }

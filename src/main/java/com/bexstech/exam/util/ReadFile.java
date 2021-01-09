@@ -28,7 +28,7 @@ public class ReadFile {
 		return routeDTOS;
 	}
 
-	public static Graph readCSVGraph(String filePath) {
+	public static Graph getGraphFromCSV(String filePath) {
 		Graph graph = new Graph();
 
 		try {

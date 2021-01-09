@@ -8,7 +8,7 @@ public class Vertex implements Iterable<Edge> {
     private ArrayList<Edge> neighborhood;
     private String label;
     private Integer price;
-    private ShortestPath shortestPath;
+    private CheapestPath cheapestPath;
     private Boolean visited;
 
     public Vertex(String label) {
@@ -18,7 +18,7 @@ public class Vertex implements Iterable<Edge> {
         this.visited = false;
     }
 
-    public String getLabel(){
+    public String getLabel() {
         return this.label;
     }
 
@@ -57,39 +57,39 @@ public class Vertex implements Iterable<Edge> {
         return this.neighborhood.contains(edge);
     }
 
-    public void addNeighbor(Edge edge){
-        if (!neighborhood.contains(edge)){
+    public void addNeighbor(Edge edge) {
+        if (!neighborhood.contains(edge)) {
             this.neighborhood.add(edge);
         }
     }
 
-    public void setAsSource(){
+    public void setAsSource() {
         visited = true;
         price = 0;
-        shortestPath = new ShortestPath(this);
+        cheapestPath = new CheapestPath(this);
     }
 
-    public ShortestPath getCheapestPath() {
-        return shortestPath;
+    public CheapestPath getCheapestPath() {
+        return cheapestPath;
     }
 
-    public void setCheapestPath(ShortestPath shortestPath) {
-        shortestPath.setPrice(this.price);
-        shortestPath.setDestination(this);
-        this.shortestPath = shortestPath;
+    public void setCheapestPath(CheapestPath cheapestPath) {
+        cheapestPath.setPrice(this.price);
+        cheapestPath.setDestination(this);
+        this.cheapestPath = cheapestPath;
     }
 
-    public void reset(){
+    public void reset() {
         this.price = Integer.MAX_VALUE;
         this.visited = false;
-        this.shortestPath = null;
+        this.cheapestPath = null;
     }
 
     public Boolean getVisited() {
         return visited;
     }
 
-    public void visit(){
+    public void visit() {
         visited = true;
     }
 

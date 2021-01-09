@@ -26,12 +26,12 @@ public class RouteController {
 
     @GetMapping
     public ResponseEntity findRoute(@RequestParam String from, @RequestParam String to) {
-        return ResponseEntity.ok( routeService.findRoute( from + "-" + to, RouteSingleton.getInstance().getRouteModels() ).toString() );
+        return ResponseEntity.ok( routeService.find( RouteSingleton.getInstance().getGraph(), from + "-" + to ).toString() );
     }
 
     @PutMapping
     public ResponseEntity insertRoute(@RequestBody RouteDTO routeDTO) throws IOException {
-        routeService.insertRoute( routeDTO );
+        routeService.insert( routeDTO );
         return ResponseEntity.noContent().build();
     }
 }
